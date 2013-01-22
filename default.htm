@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-	<title>Simple Board Games</title>
+	<title>TILES</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
@@ -9,18 +9,26 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Simple Board Game - Square Tiles</h1>
+		<h1>TILES</h1>
 		<div id="gameBoard"></div>
 		<div id="statPanel">
-			<h3>Current Run Statistics</h3>
-			<ul class="marginBottom">
+			<ul>
 				<li>Player Name: <span id="playerName"></span></li>
 				<li>Matches: <span id="matchCount"></span></li>
-				<li>Score: <span id="currentScore"></span>&nbsp;points</li>
-			</ul>
-			<ul id="gameActions">
-				<li><input type="button" id="btnShuffle" value="Shuffle" /></li>
-				<li><input type="button" id="btnRunSim" value="Run Simulation" /></li>
+				<li>Points: <span id="currentScore"></span>&nbsp;points</li>
+            </ul>
+            <ul>
+                <li>Time elapsed: </li>
+				<li>Limit: </li>
+				<li>Total score: </li>
+            </ul>
+        </div>
+        <div id="gameActions">
+			<ul>
+                <li>
+                    <a href="#" title="Roll" id="btnRoll">Roll</a>
+                    <a href="#" title="Take Score" id="btnTake">Take</a>
+                </li>
 			</ul>
 		</div>
 	</div>

@@ -1,10 +1,10 @@
-/*****************************************************************************/
+// 
 // A simple board game prototype, created by Michael Yeaney
 // Don't think too hard about this one - I didn't...
 //
 
-/*****************************************************************************/
-// A simple utility library
+//
+// Some simple utilities
 //
 
 var Utils = {};
@@ -27,13 +27,13 @@ Utils.CreateAsyncDelegate = function(method, context){
 	};
 };
 
-/*****************************************************************************/
+//
 // Define the game board
 //
 
 function GameBoard(domElementId){
 	this.uniquePositions = 4;
-	this.columns = 3;
+	this.columns = 14;
 	this.rows = 4;
 	this.playerName = '';
 	this.currentScore = 0;
@@ -118,6 +118,8 @@ GameBoard.prototype.EvaluateMatch = function(k, j){
 			this.pieces[j+1][k].highlightMatch(bMatch[2]);
 		}
 	}
+
+    this.currentScore = this.matches * 1.5;
 };
 
 // Locates all matches on the current board,
@@ -131,12 +133,9 @@ GameBoard.prototype.findMatches = function(){
 			}
 		}
 	}
-	
-	// Update score
-	this.currentScore = parseInt(this.matches * 1.625);
 };
 
-/*****************************************************************************/
+//
 // Define a game piece
 //
 
@@ -207,15 +206,14 @@ GamePiece.prototype.clearHighlighting = function(){
 	}
 };
 
-/*****************************************************************************/
+//
 // Begin game 'play'
 //
 window.onload = function(){
 	var matchLabel = Utils.Get('matchCount');
 	var scoreLabel = Utils.Get('currentScore');
 	var nameLabel = Utils.Get('playerName');
-	var shuffleButton = Utils.Get('btnShuffle');
-	var simButton = Utils.Get('btnRunSim');
+	var rollButton = Utils.Get('btnRoll');
 	
 	// supports simluations
 	var bRunSim = false;
@@ -231,26 +229,11 @@ window.onload = function(){
 	matchLabel.innerHTML = g.matches;
 	scoreLabel.innerHTML = g.currentScore;
 	
-	shuffleButton.onclick = function(){
+    // Handle clicking the 'roll' button
+	rollButton.onclick = function(){
 		g.reset();
 		g.findMatches();
 		matchLabel.innerHTML = g.matches;
 		scoreLabel.innerHTML = g.currentScore;
-	};
-	
-	simButton.onclick = function(){
-		bRunSim = !bRunSim;
-		if (bRunSim){
-			simButton.value = 'Stop Simulation';
-			hSimTimer = window.setInterval(function(){
-				g.reset();
-				g.findMatches();
-				matchLabel.innerHTML = g.matches;
-				scoreLabel.innerHTML = g.currentScore;				
-			}, 50);
-		} else {
-			simButton.value = 'Run Simulation';
-			window.clearInterval(hSimTimer);	
-		}
 	};
 };
