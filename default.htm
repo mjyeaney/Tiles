@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Simple Board Games</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <script type="text/javascript" language="javascript" src="js/game.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Simple Board Game - Square Tiles</h1>
+		<div id="gameBoard"></div>
+		<div id="statPanel">
+			<h3>Current Run Statistics</h3>
+			<ul class="marginBottom">
+				<li>Player Name: <span id="playerName"></span></li>
+				<li>Matches: <span id="matchCount"></span></li>
+				<li>Score: <span id="currentScore"></span>&nbsp;points</li>
+			</ul>
+			<ul id="gameActions">
+				<li><input type="button" id="btnShuffle" value="Shuffle" /></li>
+				<li><input type="button" id="btnRunSim" value="Run Simulation" /></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
