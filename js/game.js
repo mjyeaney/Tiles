@@ -96,7 +96,7 @@ GameBoard.prototype.init = function(){
 
 // Calculates a new rotation based on the max positions
 GameBoard.prototype.getNewPosition = function(){
-	return Math.floor(Math.random() * this.uniquePositions + 1);
+	return Math.floor((Math.random() * this.uniquePositions) + 1);
 };
 
 GameBoard.prototype.reset = function(){
@@ -256,7 +256,6 @@ window.onload = function(){
 	g.playerName = 'Player 1';
 	g.init();
 	g.draw();
-	g.findMatches();
 	
     // bind initial state
 	nameLabel.innerHTML = g.playerName;
