@@ -69,6 +69,7 @@ a, a:visited, a:hover, a:active { text-decoration: none; color: #369;}
 
 #statPanel ul { float: left; margin-right: 1em; }
 #statPanel ul#scoreInfo { float: right; width: 10em;}
+#statPanel ul#scoreInfo li { text-align: right; }
 
 #gameActions { text-align: center; padding: 1em;}
 #gameActions a { cursor: pointer; font-size: 2em;}
