@@ -28,6 +28,34 @@ Utils.CreateAsyncDelegate = function(method, context){
 };
 
 //
+// Timer
+// 
+
+function Timer(callback){
+    this.handle = null;
+    this.callback = callback;
+    this.ticks = 0;
+};
+
+Timer.prototype.Start = function(){
+    var self = this;
+    self.handle = window.setInterval(function(){
+        self.ticks++;
+        self.callback(self.ticks);
+    }, 1000);
+};
+
+Timer.prototype.Reset = function(){
+    window.clearInterval(this.handle);
+    this.ticks = 0;
+    this.callback(this.ticks);
+};
+
+Timer.prototype.Stop = function(){
+    window.clearInterval(this.handle);
+};
+
+//
 // Define the game board
 //
 
@@ -175,10 +203,10 @@ GamePiece.prototype.draw = function(row, column){
 		this.domElement.title = 'Click to hold';
 	}
 
-	if ((typeof(row) != 'undefined') && (typeof(column) != 'undefined')){
+    if ((typeof(row) != 'undefined') && (typeof(column) != 'undefined')){
 		// calc the parent (board) offset / position
-		var top = (row * 64) + 13;
-		var left = (column * 64) + 13;
+		var top = (row * 63) + 13;
+		var left = (column * 63) + 13;
 		
 		if (row > 0) top += (5 * row);
 		if (column > 0) left += (4 * column);
@@ -210,29 +238,38 @@ GamePiece.prototype.clearHighlighting = function(){
 // Begin game 'play'
 //
 window.onload = function(){
-	var matchLabel = Utils.Get('matchCount');
+	// find visual elements
+    var matchLabel = Utils.Get('matchCount');
 	var scoreLabel = Utils.Get('currentScore');
 	var nameLabel = Utils.Get('playerName');
 	var rollButton = Utils.Get('btnRoll');
+    var timeElapsed = Utils.Get('timeElapsed');
+
+    // create timer
+    var t = new Timer(function(ticks){
+        timeElapsed.innerHTML = ticks;
+    });
+    t.Start();
 	
-	// supports simluations
-	var bRunSim = false;
-	var hSimTimer = null;
-	
+    // create board
 	var g = new GameBoard('gameBoard');
 	g.playerName = 'Player 1';
 	g.init();
 	g.draw();
 	g.findMatches();
 	
+    // bind initial state
 	nameLabel.innerHTML = g.playerName;
 	matchLabel.innerHTML = g.matches;
 	scoreLabel.innerHTML = g.currentScore;
 	
     // Handle clicking the 'roll' button
 	rollButton.onclick = function(){
-		g.reset();
+        // update board
+        g.reset();
 		g.findMatches();
+
+        // bind final state
 		matchLabel.innerHTML = g.matches;
 		scoreLabel.innerHTML = g.currentScore;
 	};

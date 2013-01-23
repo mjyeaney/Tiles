@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>TILES</title>
+	<title>TILES!!!</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
@@ -9,16 +9,22 @@
 </head>
 <body>
 	<div class="container">
-		<h1>TILES</h1>
+        <div id="header">
+            <h1>TILES!!!</h1>
+            <div>
+                <a id="newGame" title="New Game">New Game...</a>
+                <a id="leaderBoards" title="Leader Boards">Leader Boards...</a>
+            </div>
+        </div>
 		<div id="gameBoard"></div>
 		<div id="statPanel">
-			<ul>
+			<ul id="playerInfo">
 				<li>Player Name: <span id="playerName"></span></li>
 				<li>Matches: <span id="matchCount"></span></li>
 				<li>Points: <span id="currentScore"></span>&nbsp;points</li>
             </ul>
-            <ul>
-                <li>Time elapsed: </li>
+            <ul id="scoreInfo">
+                <li>Time elapsed: <span id="timeElapsed">0</span>s</li>
 				<li>Limit: </li>
 				<li>Total score: </li>
             </ul>
@@ -26,8 +32,8 @@
         <div id="gameActions">
 			<ul>
                 <li>
-                    <a href="#" title="Roll" id="btnRoll">Roll</a>
-                    <a href="#" title="Take Score" id="btnTake">Take</a>
+                    <a title="Roll" id="btnRoll">Roll</a>
+                    <a title="Take Score" id="btnTake">Take</a>
                 </li>
 			</ul>
 		</div>

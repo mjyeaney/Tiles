@@ -15,17 +15,23 @@ body {
 }
 
 h1, h3 { font-family: "Segoe UI Light", Tahoma; font-weight: bold; color: #4a4a4a; }
-h1 { font-size: 4em; color: #006; }
+h1 { font-size: 4em; color: #369; }
 ul { list-style-type: none; }
-a, a:visited, a:hover, a:active { text-decoration: none; color: #006;}
+a, a:visited, a:hover, a:active { text-decoration: none; color: #369;}
 
 .container {
     width: 54em;
     margin: 0px auto;
     height: 100%;
+    overflow: hidden;
 }
 
+#header h1 { float: left; }
+#header div { float: right; margin-top: 1em;}
+#header div a { display: block; font-size: 1.2em; }
+
 #gameBoard {
+    clear: both;
 	height: 300px;
 	position: relative;
     border: 1px solid #333;
@@ -36,8 +42,8 @@ a, a:visited, a:hover, a:active { text-decoration: none; color: #006;}
 	position: absolute;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 64px;
-	width: 64px;
+	height: 70px;
+	width: 70px;
 	cursor: pointer;
 }
 
@@ -62,6 +68,9 @@ a, a:visited, a:hover, a:active { text-decoration: none; color: #006;}
 .match4 {background-image: url(../images/match_4.gif);}
 
 #statPanel ul { float: left; margin-right: 1em; }
+#statPanel ul#scoreInfo { float: right; width: 10em;}
 
-#gameActions { text-align: center; clear: both; padding-top: 1em;}
-#gameActions a { cursor: pointer; font-size: 2em; padding-right: 2em;}
+#gameActions { text-align: center; padding: 1em;}
+#gameActions a { cursor: pointer; font-size: 2em;}
+#gameActions a#btnRoll { margin-right: 1em; }
+#gameActions a#btnTake { margin-left: 1em; }
