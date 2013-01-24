@@ -14,7 +14,7 @@ body {
 	background-color: #fff;
 }
 
-h1, h3 { font-family: "Segoe UI Light", Tahoma; font-weight: bold; color: #4a4a4a; }
+h1, h3 { font-family: "Segoe UI Light", Tahoma; font-weight: normal; color: #4a4a4a; }
 h1 { font-size: 4em; color: #369; }
 ul { list-style-type: none; }
 a, a:visited, a:hover, a:active { text-decoration: none; color: #369; cursor: pointer; }
@@ -69,7 +69,6 @@ a, a:visited, a:hover, a:active { text-decoration: none; color: #369; cursor: po
 
 #statPanel ul { float: left; margin-right: 1em; }
 #statPanel ul#scoreInfo { float: right; width: 10em;}
-#statPanel ul#scoreInfo li { text-align: right; }
 
 #gameActions { text-align: center; padding: 1em;}
 #gameActions a { cursor: pointer; font-size: 2em;}
