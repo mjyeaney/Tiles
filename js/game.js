@@ -9,57 +9,57 @@
 
 var Utils = {};
 
-Utils.Get = function(id){
+Utils.Get = function (id) {
 	return document.getElementById(id);
 };
 
-Utils.CreateDelegate = function(method, context){
-	return function(){
+Utils.CreateDelegate = function (method, context) {
+	return function () {
 		method.apply(context);
 	};
 };
 
-Utils.CreateAsyncDelegate = function(method, context){
-	return function(){
-		window.setTimeout(function(){
+Utils.CreateAsyncDelegate = function (method, context) {
+	return function () {
+		window.setTimeout(function () {
 			method.apply(context);
 		}, 0);
 	};
 };
 
 //
-// Timer
+// Timer - for game elapsed / countdown
 // 
 
-function Timer(callback){
-    this.handle = null;
-    this.callback = callback;
-    this.ticks = 0;
+function Timer(callback) {
+	this.handle = null;
+	this.callback = callback;
+	this.ticks = 0;
 };
 
-Timer.prototype.Start = function(){
-    var self = this;
-    self.handle = window.setInterval(function(){
-        self.ticks++;
-        self.callback(self.ticks);
-    }, 1000);
+Timer.prototype.Start = function () {
+	var self = this;
+	self.handle = window.setInterval(function () {
+		self.ticks++;
+		self.callback(self.ticks);
+	}, 1000);
 };
 
-Timer.prototype.Reset = function(){
-    window.clearInterval(this.handle);
-    this.ticks = 0;
-    this.callback(this.ticks);
+Timer.prototype.Reset = function () {
+	window.clearInterval(this.handle);
+	this.ticks = 0;
+	this.callback(this.ticks);
 };
 
-Timer.prototype.Stop = function(){
-    window.clearInterval(this.handle);
+Timer.prototype.Stop = function () {
+	window.clearInterval(this.handle);
 };
 
 //
 // Define the game board
 //
 
-function GameBoard(domElementId){
+function GameBoard(domElementId) {
 	this.uniquePositions = 4;
 	this.columns = 14;
 	this.rows = 4;
@@ -73,41 +73,41 @@ function GameBoard(domElementId){
 // Our static strategy data
 // Indexed array is: [match, marker position (orig), marker position (match)]
 GameBoard.prototype.Data = {
-	rMatches:{1:[3,2,4],2:[4,2,4],3:[1,2,4],4:[2,2,4]},
-	bMatches:{1:[3,3,1],2:[4,3,1],3:[1,3,1],4:[2,3,1]}
+	rMatches: { 1: [3, 2, 4], 2: [4, 2, 4], 3: [1, 2, 4], 4: [2, 2, 4] },
+	bMatches: { 1: [3, 3, 1], 2: [4, 3, 1], 3: [1, 3, 1], 4: [2, 3, 1] }
 };
 
 // sets up the game pieces, event handlers, etc.
-GameBoard.prototype.init = function(){
+GameBoard.prototype.init = function () {
 	// initialize the arrays
 	this.pieces = new Array(4);
-	for (var j=0; j < this.pieces.length; j++){
+	for (var j = 0; j < this.pieces.length; j++) {
 		this.pieces[j] = new Array(3);
 	}
-	
+
 	// setup the pieces
-	for (var j=0; j < this.rows; j++){
-		for (var k=0; k < this.columns; k++){
-			this.pieces[j][k] = new GamePiece(this.domElement, 
+	for (var j = 0; j < this.rows; j++) {
+		for (var k = 0; k < this.columns; k++) {
+			this.pieces[j][k] = new GamePiece(this.domElement,
 				this.getNewPosition());
 		}
 	}
 };
 
 // Calculates a new rotation based on the max positions
-GameBoard.prototype.getNewPosition = function(){
+GameBoard.prototype.getNewPosition = function () {
 	return Math.floor((Math.random() * this.uniquePositions) + 1);
 };
 
-GameBoard.prototype.reset = function(){
+GameBoard.prototype.reset = function () {
 	// reset all counter
 	this.matches = 0;
 	this.currentScore = 0;
-	
+
 	// setup the pieces
-	for (var j=0; j < this.rows; j++){
-		for (var k=0; k < this.columns; k++){
-			if (!this.pieces[j][k].hold){
+	for (var j = 0; j < this.rows; j++) {
+		for (var k = 0; k < this.columns; k++) {
+			if (!this.pieces[j][k].hold) {
 				this.pieces[j][k].clearHighlighting();
 				this.pieces[j][k].rotateTo(this.getNewPosition());
 			}
@@ -116,47 +116,47 @@ GameBoard.prototype.reset = function(){
 };
 
 // redraws the game with the newest information
-GameBoard.prototype.draw = function(){
-	for (var j=0; j < this.rows; j++){
-		for (var k=0; k < this.columns; k++){
+GameBoard.prototype.draw = function () {
+	for (var j = 0; j < this.rows; j++) {
+		for (var k = 0; k < this.columns; k++) {
 			this.pieces[j][k].draw(j, k);
 		}
 	}
 };
 
 // Determines if a set of cells is a match
-GameBoard.prototype.EvaluateMatch = function(k, j){
+GameBoard.prototype.EvaluateMatch = function (k, j) {
 	var cell = this.pieces[j][k];
 	var currentPos = cell.currentPosition;
 	var rMatch = this.Data.rMatches[currentPos];
 	var bMatch = this.Data.bMatches[currentPos];
-	
-	if ((rMatch != null) && (k < (this.columns - 1))){
-		if (this.pieces[j][k+1].currentPosition == rMatch[0]){
+
+	if ((rMatch != null) && (k < (this.columns - 1))) {
+		if (this.pieces[j][k + 1].currentPosition == rMatch[0]) {
 			this.matches++;
 			cell.highlightMatch(rMatch[1]);
-			this.pieces[j][k+1].highlightMatch(rMatch[2]);
-		}
-	}
-	
-	if ((bMatch != null) && (j < (this.rows - 1))){
-		if (this.pieces[j+1][k].currentPosition == bMatch[0]){
-			this.matches++;
-			cell.highlightMatch(bMatch[1]);
-			this.pieces[j+1][k].highlightMatch(bMatch[2]);
+			this.pieces[j][k + 1].highlightMatch(rMatch[2]);
 		}
 	}
 
-    this.currentScore = this.matches * 1.5;
+	if ((bMatch != null) && (j < (this.rows - 1))) {
+		if (this.pieces[j + 1][k].currentPosition == bMatch[0]) {
+			this.matches++;
+			cell.highlightMatch(bMatch[1]);
+			this.pieces[j + 1][k].highlightMatch(bMatch[2]);
+		}
+	}
+
+	this.currentScore = this.matches * 1.5;
 };
 
 // Locates all matches on the current board,
 // and updates the score accordingly.
-GameBoard.prototype.findMatches = function(){
-	for (var j=0; j < this.rows; j++){
-		for (var k=0; k < this.columns; k++){
+GameBoard.prototype.findMatches = function () {
+	for (var j = 0; j < this.rows; j++) {
+		for (var k = 0; k < this.columns; k++) {
 			var cell = this.pieces[j][k];
-			if (!cell.hold){
+			if (!cell.hold) {
 				this.EvaluateMatch(k, j);
 			}
 		}
@@ -167,33 +167,33 @@ GameBoard.prototype.findMatches = function(){
 // Define a game piece
 //
 
-function GamePiece(boardElement, position){
+function GamePiece(boardElement, position) {
 	this.currentPosition = position;
 	this.boardElement = boardElement;
 	this.hold = false;
 	this.domElement = document.createElement('DIV');
 	this.domElement.title = 'Click to hold';
-	this.domElement.className = 'gamePiece tile' + this.currentPosition;	
+	this.domElement.className = 'gamePiece tile' + this.currentPosition;
 	this.domElement.display = 'none';
 	this.boardElement.appendChild(this.domElement);
-	
+
 	// Wire the hold function up
-	this.domElement.onclick = Utils.CreateDelegate(function(){
+	this.domElement.onclick = Utils.CreateDelegate(function () {
 		this.hold = !this.hold
 		this.draw();
 	}, this);
 };
 
-GamePiece.prototype.rotateTo = function(position){
+GamePiece.prototype.rotateTo = function (position) {
 	this.domElement.display = 'none';
 	this.currentPosition = position;
 	this.domElement.className = 'gamePiece tile' + this.currentPosition;
 };
 
 // Creates the gamepiece on the canvas
-GamePiece.prototype.draw = function(row, column){
+GamePiece.prototype.draw = function (row, column) {
 	// Update position
-	if (this.hold){
+	if (this.hold) {
 		this.domElement.style.opacity = .5;
 		this.domElement.style.filter = 'alpha(opacity=50)';
 		this.domElement.title = 'Click to release';
@@ -203,31 +203,31 @@ GamePiece.prototype.draw = function(row, column){
 		this.domElement.title = 'Click to hold';
 	}
 
-    if ((typeof(row) != 'undefined') && (typeof(column) != 'undefined')){
+	if ((typeof (row) != 'undefined') && (typeof (column) != 'undefined')) {
 		// calc the parent (board) offset / position
 		var top = (row * 63) + 13;
 		var left = (column * 63) + 13;
-		
+
 		if (row > 0) top += (5 * row);
 		if (column > 0) left += (4 * column);
-		
+
 		// update dom positions
 		this.domElement.style.top = top + 'px';
 		this.domElement.style.left = left + 'px';
-	}	
+	}
 };
 
-GamePiece.prototype.highlightMatch = function(position){
-	if (!this.hold){
+GamePiece.prototype.highlightMatch = function (position) {
+	if (!this.hold) {
 		var match = document.createElement('DIV');
 		match.className = 'highlighter match' + position;
 		this.domElement.appendChild(match);
 	}
 };
 
-GamePiece.prototype.clearHighlighting = function(){
-	if (this.domElement.childNodes.length > 0){
-		for (var j = (this.domElement.childNodes.length - 1); j >= 0; j--){
+GamePiece.prototype.clearHighlighting = function () {
+	if (this.domElement.childNodes.length > 0) {
+		for (var j = (this.domElement.childNodes.length - 1); j >= 0; j--) {
 			var child = this.domElement.childNodes[j];
 			this.domElement.removeChild(child);
 		}
@@ -237,38 +237,39 @@ GamePiece.prototype.clearHighlighting = function(){
 //
 // Begin game 'play'
 //
-window.onload = function(){
+window.onload = function () {
 	// find visual elements
-    var matchLabel = Utils.Get('matchCount');
+	var matchLabel = Utils.Get('matchCount');
 	var scoreLabel = Utils.Get('currentScore');
 	var nameLabel = Utils.Get('playerName');
 	var rollButton = Utils.Get('btnRoll');
-    var timeElapsed = Utils.Get('timeElapsed');
+	var timeElapsed = Utils.Get('timeElapsed');
 
-    // create timer
-    var t = new Timer(function(ticks){
-        timeElapsed.innerHTML = ticks;
-    });
-    t.Start();
-	
-    // create board
+	// create timer
+	var t = new Timer(function (ticks) {
+		timeElapsed.innerHTML = ticks;
+	});
+	t.Start();
+
+	// create board
 	var g = new GameBoard('gameBoard');
 	g.playerName = 'Player 1';
 	g.init();
 	g.draw();
-	
-    // bind initial state
+
+	// bind initial state
 	nameLabel.innerHTML = g.playerName;
 	matchLabel.innerHTML = g.matches;
 	scoreLabel.innerHTML = g.currentScore;
-	
-    // Handle clicking the 'roll' button
-	rollButton.onclick = function(){
-        // update board
-        g.reset();
-		g.findMatches();
 
-        // bind final state
+	// Handle clicking the 'roll' button
+	rollButton.onclick = function () {
+		// update board
+		g.reset();
+		g.findMatches();
+		b.draw();
+
+		// bind final state
 		matchLabel.innerHTML = g.matches;
 		scoreLabel.innerHTML = g.currentScore;
 	};
